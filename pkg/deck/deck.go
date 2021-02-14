@@ -2,17 +2,39 @@ package deck
 
 // Card represents a playing card
 type Card struct {
-	Suit  Suit
-	Value int
+	Suit
+	Rank
 }
 
-// Suit is the playing card suit
-type Suit int
+// Suit of the playing card
+type Suit uint8
 
 // All suits of the playing card
 const (
-	Clubs Suit = iota
-	Diamonds
-	Hearts
-	Spades
+	Club Suit = iota
+	Diamond
+	Heart
+	Spade
+	Joker
+)
+
+// Rank of the playing card
+type Rank uint8
+
+// All ranks of the playing card
+const (
+	_ Rank = iota
+	Ace
+	Two
+	Three
+	Four
+	Five
+	Six
+	Seven
+	Eight
+	Nine
+	Ten
+	Jack
+	Queen
+	King
 )

@@ -95,11 +95,10 @@ func WithShuffle() func([]Card) []Card {
 	return func(cards []Card) []Card {
 		rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
 		newIndecies := rnd.Perm(len(cards))
-		result := make([]Card, len(cards))
 		for i, j := range newIndecies {
-			result[i] = cards[j]
+			cards[i], cards[j] = cards[j], cards[i]
 		}
-		return result
+		return cards
 	}
 }
 
@@ -127,5 +126,5 @@ func Less(cards []Card) func(i, j int) bool {
 }
 
 func abs(card Card) int {
-	return int(card.Suit)*int(maxRank) + int(card.Rank)
+	return int(card.Suit)*(int(maxRank)+1) + int(card.Rank)
 }

@@ -123,3 +123,20 @@ func Less(cards []Card) func(i, j int) bool {
 func abs(card Card) int {
 	return int(card.Suit)*(int(maxRank)+1) + int(card.Rank)
 }
+
+// FilterFunc is filter function, which returns true if the provided card must be selected,
+// and returns false if the card must be filtered out.
+type FilterFunc func(card Card) bool
+
+// WithFilter is an option which provides a filter func
+func WithFilter(f FilterFunc) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		filtered := make([]Card, 0, len(cards))
+		for _, card := range cards {
+			if f(card) {
+				filtered = append(filtered, card)
+			}
+		}
+		return filtered
+	}
+}

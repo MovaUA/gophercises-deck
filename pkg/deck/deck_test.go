@@ -58,3 +58,16 @@ func TestWithDefaultSort(t *testing.T) {
 		t.Errorf("Wrong last card: got %q, want %q", last, wantLast)
 	}
 }
+
+func TestWithFilter(t *testing.T) {
+	wantRank := Ten
+	f := func(card Card) bool {
+		return card.Rank == wantRank
+	}
+	cards := New(WithFilter(f))
+	for _, card := range cards {
+		if card.Rank != wantRank {
+			t.Errorf("Wrong card: got %q, want Rank of %q", card, wantRank)
+		}
+	}
+}

@@ -1,10 +1,10 @@
+//go:generate stringer -type=Suit
+//go:generate stringer -type=Rank
+
+// Package deck is a general interface for the deck of the playing cards
 package deck
 
-// Card represents a playing card
-type Card struct {
-	Suit
-	Rank
-}
+import "fmt"
 
 // Suit of the playing card
 type Suit uint8
@@ -38,3 +38,16 @@ const (
 	Queen
 	King
 )
+
+// Card represents a playing card
+type Card struct {
+	Suit
+	Rank
+}
+
+func (c Card) String() string {
+	if c.Suit == Joker {
+		return c.Suit.String()
+	}
+	return fmt.Sprintf("%s of %ss", c.Rank, c.Suit)
+}

@@ -28,21 +28,22 @@ func TestNew(t *testing.T) {
 		t.Errorf("Wrong number of cards: got %d, want %d", got, want)
 	}
 }
-func TestWithJoker(t *testing.T) {
-	cards := New(WithJoker(), WithJoker())
-	want := 13*4 + 2
-	got := len(cards)
-	if got != want {
-		t.Errorf("Wrong number of cards: got %d, want %d", got, want)
+func TestWithJokers(t *testing.T) {
+	wantJokers := 3
+	cards := New(WithJokers(wantJokers))
+	wantLen := 13*4 + wantJokers
+	gotLen := len(cards)
+	if gotLen != wantLen {
+		t.Errorf("Wrong number of cards: got %d, want %d", gotLen, wantLen)
 	}
-	jokerCount := 0
+	gotJokers := 0
 	for _, card := range cards {
 		if card.Suit == Joker {
-			jokerCount++
+			gotJokers++
 		}
 	}
-	if jokerCount != 2 {
-		t.Errorf("Wrong number of %ss: got %d, want %d", Joker, jokerCount, 2)
+	if gotJokers != wantJokers {
+		t.Errorf("Wrong number of %ss: got %d, want %d", Joker, gotJokers, wantJokers)
 	}
 }
 

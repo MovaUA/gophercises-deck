@@ -78,10 +78,13 @@ func New(opts ...func([]Card) []Card) []Card {
 	return cards
 }
 
-// WithJoker returns an option which adds Joker
-func WithJoker() func([]Card) []Card {
+// WithJokers returns an option which adds specified number of Jokers
+func WithJokers(n int) func([]Card) []Card {
 	return func(cards []Card) []Card {
-		return append(cards, Card{Suit: Joker})
+		for i := 0; i < n; i++ {
+			cards = append(cards, Card{Suit: Joker})
+		}
+		return cards
 	}
 }
 

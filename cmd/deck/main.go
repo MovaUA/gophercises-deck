@@ -9,7 +9,7 @@ import (
 func main() {
 	fmt.Println("deck")
 
-	d := deck.New(deck.WithJoker(), deck.WithSort(deck.Less))
+	d := deck.New(deck.WithJoker(), deck.WithSort(deck.Less), deck.WithShuffle())
 	for _, c := range d {
 		fmt.Printf("%+v\n", c)
 	}

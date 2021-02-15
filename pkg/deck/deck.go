@@ -6,7 +6,9 @@ package deck
 
 import (
 	"fmt"
+	"math/rand"
 	"sort"
+	"time"
 )
 
 // Suit of the playing card
@@ -83,10 +85,21 @@ func WithJoker() func([]Card) []Card {
 	}
 }
 
+// Shuffle returns shuffled slice of cards
+func Shuffle(cards []Card) []Card {
+	return WithShuffle()(cards)
+}
+
 // WithShuffle returns an option which shuffles a slice of cards
 func WithShuffle() func([]Card) []Card {
 	return func(cards []Card) []Card {
-		return cards
+		rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
+		newIndecies := rnd.Perm(len(cards))
+		result := make([]Card, len(cards))
+		for i, j := range newIndecies {
+			result[i] = cards[j]
+		}
+		return result
 	}
 }
 

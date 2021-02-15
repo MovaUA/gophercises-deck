@@ -87,18 +87,11 @@ func WithJoker() func([]Card) []Card {
 
 // Shuffle returns shuffled slice of cards
 func Shuffle(cards []Card) []Card {
-	return WithShuffle()(cards)
-}
-
-// WithShuffle returns an option which shuffles a slice of cards
-func WithShuffle() func([]Card) []Card {
-	return func(cards []Card) []Card {
-		rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
-		for i, j := range rnd.Perm(len(cards)) {
-			cards[i], cards[j] = cards[j], cards[i]
-		}
-		return cards
+	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
+	for i, j := range rnd.Perm(len(cards)) {
+		cards[i], cards[j] = cards[j], cards[i]
 	}
+	return cards
 }
 
 // WithDefaultSort returns an options which sorts cards with default sort

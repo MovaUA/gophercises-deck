@@ -94,8 +94,7 @@ func Shuffle(cards []Card) []Card {
 func WithShuffle() func([]Card) []Card {
 	return func(cards []Card) []Card {
 		rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
-		newIndecies := rnd.Perm(len(cards))
-		for i, j := range newIndecies {
+		for i, j := range rnd.Perm(len(cards)) {
 			cards[i], cards[j] = cards[j], cards[i]
 		}
 		return cards

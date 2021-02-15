@@ -65,7 +65,7 @@ func (c Card) String() string {
 }
 
 // New creates Card slice (a new deck of playing cards)
-func New(opts ...func([]Card) []Card) []Card {
+func New(opts ...OptFunc) []Card {
 	cards := make([]Card, 0, 4*13)
 	for _, suit := range suits {
 		for rank := minRank; rank <= maxRank; rank++ {
@@ -78,8 +78,11 @@ func New(opts ...func([]Card) []Card) []Card {
 	return cards
 }
 
+// OptFunc is an option function type
+type OptFunc func([]Card) []Card
+
 // WithJokers returns an option which adds specified number of Jokers
-func WithJokers(n int) func([]Card) []Card {
+func WithJokers(n int) OptFunc {
 	return func(cards []Card) []Card {
 		for i := 0; i < n; i++ {
 			cards = append(cards, Card{Suit: Joker})
@@ -98,7 +101,7 @@ func Shuffle(cards []Card) []Card {
 }
 
 // WithDefaultSort returns an options which sorts cards with default sort
-func WithDefaultSort() func([]Card) []Card {
+func WithDefaultSort() OptFunc {
 	return func(cards []Card) []Card {
 		sort.SliceStable(cards, Less(cards))
 		return cards
@@ -106,7 +109,7 @@ func WithDefaultSort() func([]Card) []Card {
 }
 
 // WithSort returns an option which sorts cards with provided less function
-func WithSort(less func([]Card) func(i, j int) bool) func([]Card) []Card {
+func WithSort(less func([]Card) func(i, j int) bool) OptFunc {
 	return func(cards []Card) []Card {
 		sort.SliceStable(cards, less(cards))
 		return cards
@@ -129,7 +132,7 @@ func abs(card Card) int {
 type FilterFunc func(card Card) bool
 
 // WithFilter is an option which provides a filter func
-func WithFilter(f FilterFunc) func([]Card) []Card {
+func WithFilter(f FilterFunc) OptFunc {
 	return func(cards []Card) []Card {
 		filtered := make([]Card, 0, len(cards))
 		for _, card := range cards {

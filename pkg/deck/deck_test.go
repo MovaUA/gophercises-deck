@@ -102,3 +102,12 @@ func TestShuffle(t *testing.T) {
 		}
 	}
 }
+
+func TestDeck(t *testing.T) {
+	cards := New(WithJokers(2), Deck(3))
+	want := (52 + 2) * 3
+	got := len(cards)
+	if got != want {
+		t.Errorf("length: want %d, got %d", want, got)
+	}
+}

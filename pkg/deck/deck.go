@@ -81,6 +81,17 @@ func New(opts ...OptFunc) []Card {
 // OptFunc is an option function type
 type OptFunc func([]Card) []Card
 
+// Deck is an option function which returns specified amount of decks of the provided cards
+func Deck(n int) OptFunc {
+	return func(cards []Card) []Card {
+		var result []Card
+		for i := 0; i < n; i++ {
+			result = append(result, cards...)
+		}
+		return result
+	}
+}
+
 // WithJokers returns an option which adds specified number of Jokers
 func WithJokers(n int) OptFunc {
 	return func(cards []Card) []Card {

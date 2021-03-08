@@ -1,16 +1,17 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
+	"os"
 
 	"github.com/movaua/gophercises-deck/pkg/deck"
 )
 
 func main() {
-	fmt.Println("deck")
+	cards := deck.New(deck.WithJokers(3), deck.Shuffle)
 
-	d := deck.New(deck.WithJokers(3), deck.Shuffle)
-	for _, c := range d {
-		fmt.Printf("%+v\n", c)
-	}
+	jsonEncoder := json.NewEncoder(os.Stdout)
+	jsonEncoder.SetIndent("", "  ")
+
+	jsonEncoder.Encode(cards)
 }

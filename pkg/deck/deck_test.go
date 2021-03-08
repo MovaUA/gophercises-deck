@@ -1,6 +1,9 @@
 package deck
 
 import (
+	"bytes"
+	_ "embed"
+	"encoding/json"
 	"fmt"
 	"testing"
 )
@@ -68,6 +71,34 @@ func TestWithFilter(t *testing.T) {
 	for _, card := range cards {
 		if card.Rank != wantRank {
 			t.Errorf("Wrong card: got %q, want Rank of %q", card, wantRank)
+		}
+	}
+}
+
+//go:embed _tests/wantShuffle.json
+var wantShuffle []byte
+
+func TestShuffle(t *testing.T) {
+	var want []Card
+	{
+		jsonDecoder := json.NewDecoder(bytes.NewReader(wantShuffle))
+		if err := jsonDecoder.Decode(&want); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	testShuffle := func(cards []Card) []Card {
+		return shuffle(cards, 0)
+	}
+
+	got := New(testShuffle)
+
+	if len(got) != len(want) {
+		t.Fatalf("len: want %d, got %d\n", len(want), len(got))
+	}
+	for i := 0; i < len(want); i++ {
+		if got[i] != want[i] {
+			t.Fatalf("index %d: want %+v, got %+v\n", i, want[i], got[i])
 		}
 	}
 }

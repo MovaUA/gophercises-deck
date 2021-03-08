@@ -53,8 +53,8 @@ const (
 
 // Card represents a playing card
 type Card struct {
-	Suit
-	Rank
+	Suit `json:"suit,omitempty"`
+	Rank `json:"rank,omitempty"`
 }
 
 func (c Card) String() string {
@@ -93,7 +93,13 @@ func WithJokers(n int) OptFunc {
 
 // Shuffle returns shuffled slice of cards
 func Shuffle(cards []Card) []Card {
-	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
+	seed := time.Now().UnixNano()
+	return shuffle(cards, seed)
+}
+
+// shuffle returns shuffled slice of cards based on the provided seed
+func shuffle(cards []Card, seed int64) []Card {
+	rnd := rand.New(rand.NewSource(seed))
 	for i, j := range rnd.Perm(len(cards)) {
 		cards[i], cards[j] = cards[j], cards[i]
 	}
